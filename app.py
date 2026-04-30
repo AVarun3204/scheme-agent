@@ -1,0 +1,267 @@
+import streamlit as st
+import os
+from dotenv import load_dotenv
+from groq import Groq
+import json
+from matcher import match_schemes
+
+load_dotenv()
+
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+
+SYSTEM_PROMPT = """You are a helpful Indian government scheme advisor called SchemeBot.
+Your job is to help Indian citizens discover government schemes and subsidies they are eligible for.
+
+Collect this information one question at a time:
+1. Name
+2. Age
+3. Gender (male/female)
+4. State they live in
+5. Occupation (farmer/student/self_employed/salaried/unemployed/street_vendor)
+6. Annual family income in rupees
+7. Whether they are BPL card holder (yes/no)
+8. Whether they own land (yes/no)
+9. Whether they have a bank account (yes/no)
+10. Whether they are enrolled in college (yes/no)
+
+Ask ONE question at a time in simple friendly English.
+
+After collecting all information output exactly:
+PROFILE_COMPLETE: {"name": "X", "age": 0, "gender": "male", "state": "telangana", "occupation": "farmer", "annual_income": 0, "is_bpl": true, "owns_land": true, "has_bank_account": true, "enrolled_in_college": false}
+
+Rules:
+- state always lowercase
+- occupation must be one of: farmer, student, self_employed, salaried, unemployed, street_vendor
+- booleans must be true or false
+- age and annual_income must be numbers
+"""
+
+def extract_profile(text):
+    if "PROFILE_COMPLETE:" in text:
+        json_part = text.split("PROFILE_COMPLETE:")[1].strip()
+        try:
+            return json.loads(json_part)
+        except:
+            return None
+    return None
+
+def chat(messages):
+    response = client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=messages,
+        temperature=0.7,
+        max_tokens=1000
+    )
+    return response.choices[0].message.content
+
+def show_scheme_card(scheme, index):
+    with st.container():
+        st.markdown(f"""
+        <div style="
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 3px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        ">
+        <div style="
+            background: white;
+            border-radius: 13px;
+            padding: 20px;
+        ">
+            <h3 style="color: #4a4a8a; margin: 0 0 10px 0;">
+                {index}. {scheme['name']}
+            </h3>
+            <p style="color: #666; margin: 5px 0;">📋 {scheme['description']}</p>
+            <div style="
+                background: #f0fff4;
+                border-left: 4px solid #38a169;
+                padding: 10px 15px;
+                border-radius: 5px;
+                margin: 10px 0;
+            ">
+                <strong style="color: #276749;">💰 Benefit: {scheme['benefit']}</strong>
+            </div>
+            <p style="color: #e53e3e; margin: 5px 0;">⏰ Deadline: {scheme['deadline']}</p>
+            <a href="{scheme['apply_link']}" target="_blank" style="
+                display: inline-block;
+                background: #4a4a8a;
+                color: white;
+                padding: 8px 20px;
+                border-radius: 20px;
+                text-decoration: none;
+                font-size: 14px;
+                margin-top: 10px;
+            ">🔗 Apply Now</a>
+        </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        with st.expander("📄 View Documents Needed"):
+            for doc in scheme['documents']:
+                st.write(f"• {doc}")
+
+# ─── Page Config ───────────────────────────────────────────
+st.set_page_config(
+    page_title="Scheme Agent — Find Your Government Benefits",
+    page_icon="🏛️",
+    layout="centered"
+)
+
+# ─── Custom CSS ────────────────────────────────────────────
+st.markdown("""
+<style>
+    .main { background-color: #f8f9ff; }
+    .stChatMessage { border-radius: 15px; margin: 5px 0; }
+    .stTextInput input {
+        border-radius: 25px;
+        border: 2px solid #667eea;
+        padding: 10px 20px;
+    }
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+</style>
+""", unsafe_allow_html=True)
+
+# ─── Header ────────────────────────────────────────────────
+st.markdown("""
+<div style="text-align: center; padding: 30px 0 10px 0;">
+    <h1 style="color: #4a4a8a; font-size: 2.5em;">🏛️ Scheme Agent</h1>
+    <p style="color: #666; font-size: 1.1em;">
+        Discover government schemes & subsidies you qualify for — instantly
+    </p>
+    <div style="
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 15px;
+        flex-wrap: wrap;
+    ">
+        <span style="background:#e8f5e9; color:#2e7d32; padding:5px 15px; border-radius:20px; font-size:13px;">✅ 100% Free</span>
+        <span style="background:#e3f2fd; color:#1565c0; padding:5px 15px; border-radius:20px; font-size:13px;">🤖 AI Powered</span>
+        <span style="background:#fce4ec; color:#880e4f; padding:5px 15px; border-radius:20px; font-size:13px;">🇮🇳 India Focused</span>
+        <span style="background:#f3e5f5; color:#6a1b9a; padding:5px 15px; border-radius:20px; font-size:13px;">⚡ Instant Results</span>
+    </div>
+</div>
+<hr style="border: 1px solid #e0e0e0; margin: 20px 0;">
+""", unsafe_allow_html=True)
+
+# ─── Session State Setup ────────────────────────────────────
+if "messages" not in st.session_state:
+    st.session_state.messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
+
+if "profile_found" not in st.session_state:
+    st.session_state.profile_found = False
+
+if "matched_schemes" not in st.session_state:
+    st.session_state.matched_schemes = []
+
+if "user_name" not in st.session_state:
+    st.session_state.user_name = "Friend"
+
+if "started" not in st.session_state:
+    st.session_state.started = False
+
+# ─── Start Button ───────────────────────────────────────────
+if not st.session_state.started:
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        if st.button("🚀 Start Finding My Schemes", use_container_width=True):
+            st.session_state.started = True
+            st.session_state.messages.append({
+                "role": "user",
+                "content": "Greet the user warmly and ask their name."
+            })
+            response = chat(st.session_state.messages)
+            st.session_state.messages.append({"role": "assistant", "content": response})
+            st.session_state.chat_history.append({"role": "assistant", "content": response})
+            st.rerun()
+
+# ─── Chat Interface ─────────────────────────────────────────
+if st.session_state.started and not st.session_state.profile_found:
+
+    # Show chat history
+    for msg in st.session_state.chat_history:
+        if msg["role"] == "assistant":
+            with st.chat_message("assistant", avatar="🤖"):
+                # Hide PROFILE_COMPLETE line from user
+                display_text = msg["content"]
+                if "PROFILE_COMPLETE:" in display_text:
+                    display_text = "Perfect! I have all the information I need. Let me search for your schemes now..."
+                st.write(display_text)
+        else:
+            with st.chat_message("user", avatar="👤"):
+                st.write(msg["content"])
+
+    # Input box
+    user_input = st.chat_input("Type your answer here...")
+
+    if user_input:
+        # Add user message
+        st.session_state.chat_history.append({"role": "user", "content": user_input})
+        st.session_state.messages.append({"role": "user", "content": user_input})
+
+        # Get bot response
+        response = chat(st.session_state.messages)
+        st.session_state.messages.append({"role": "assistant", "content": response})
+        st.session_state.chat_history.append({"role": "assistant", "content": response})
+
+        # Check if profile complete
+        profile = extract_profile(response)
+        if profile:
+            st.session_state.profile_found = True
+            st.session_state.user_name = profile.get("name", "Friend")
+            st.session_state.matched_schemes = match_schemes(profile)
+
+        st.rerun()
+
+# ─── Results Page ───────────────────────────────────────────
+if st.session_state.profile_found:
+    name = st.session_state.user_name
+    schemes = st.session_state.matched_schemes
+
+    st.markdown(f"""
+    <div style="
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 25px;
+        border-radius: 15px;
+        text-align: center;
+        margin: 20px 0;
+        color: white;
+    ">
+        <h2 style="margin: 0; color: white;">🎉 Great News, {name}!</h2>
+        <p style="margin: 10px 0 0 0; font-size: 1.2em; color: white;">
+            You qualify for <strong>{len(schemes)} government scheme(s)</strong>
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    if schemes:
+        st.markdown("### 📋 Your Eligible Schemes")
+        for i, scheme in enumerate(schemes, 1):
+            show_scheme_card(scheme, i)
+
+        st.markdown("""
+        <div style="
+            background: #fff8e1;
+            border: 1px solid #ffc107;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-top: 20px;
+        ">
+            <strong>⚠️ Important Note:</strong> Eligibility shown is based on information you provided.
+            Final verification is done by the government using your Aadhaar and documents.
+            Make sure all your documents are genuine before applying.
+        </div>
+        """, unsafe_allow_html=True)
+    else:
+        st.warning("No matching schemes found for your profile. Please visit your nearest government office.")
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    if st.button("🔄 Check for Another Person", use_container_width=True):
+        for key in ["messages", "chat_history", "profile_found",
+                    "matched_schemes", "user_name", "started"]:
+            del st.session_state[key]
+        st.rerun()

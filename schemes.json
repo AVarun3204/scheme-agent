@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "name": "PM Awas Yojana (Gramin)",
+    "description": "Free house for rural families who have no pucca house",
+    "benefit": "1,20,000 to 1,30,000 for house construction",
+    "category": "housing",
+    "eligibility": {
+      "residence": "rural",
+      "max_annual_income": 200000,
+      "bpl_required": true
+    },
+    "documents": ["Aadhaar card", "Ration card", "Income certificate", "BPL certificate"],
+    "apply_link": "https://pmayg.nic.in",
+    "deadline": "ongoing"
+  },
+  {
+    "id": 2,
+    "name": "PM Kisan Samman Nidhi",
+    "description": "6000 per year cash support for farmers",
+    "benefit": "6,000 per year",
+    "category": "agriculture",
+    "eligibility": {
+      "occupation": "farmer",
+      "must_own_land": true
+    },
+    "documents": ["Aadhaar card", "Land ownership documents", "Bank account details"],
+    "apply_link": "https://pmkisan.gov.in",
+    "deadline": "ongoing"
+  },
+  {
+    "id": 3,
+    "name": "Ayushman Bharat PM-JAY",
+    "description": "Free health insurance up to 5 lakh per year",
+    "benefit": "5,00,000 health cover per family per year",
+    "category": "health",
+    "eligibility": {
+      "bpl_required": true,
+      "max_annual_income": 250000
+    },
+    "documents": ["Aadhaar card", "Ration card", "Income certificate"],
+    "apply_link": "https://pmjay.gov.in",
+    "deadline": "ongoing"
+  },
+  {
+    "id": 4,
+    "name": "PM Mudra Loan Yojana",
+    "description": "Low interest business loans for small entrepreneurs",
+    "benefit": "Loan from 50,000 up to 10,00,000",
+    "category": "business",
+    "eligibility": {
+      "occupation": "self_employed",
+      "min_age": 18,
+      "max_age": 65
+    },
+    "documents": ["Aadhaar card", "PAN card", "Business proof", "Bank statement"],
+    "apply_link": "https://www.mudra.org.in",
+    "deadline": "ongoing"
+  },
+  {
+    "id": 5,
+    "name": "National Scholarship Portal",
+    "description": "Central scholarships for students",
+    "benefit": "10,000 to 25,000 per year",
+    "category": "education",
+    "eligibility": {
+      "max_age": 30,
+      "enrolled_in_college": true,
+      "max_annual_family_income": 250000
+    },
+    "documents": ["Aadhaar card", "Income certificate", "College admission letter"],
+    "apply_link": "https://scholarships.gov.in",
+    "deadline": "October 31 every year"
+  },
+  {
+    "id": 6,
+    "name": "Atal Pension Yojana",
+    "description": "Guaranteed pension after age 60 for unorganised workers",
+    "benefit": "1,000 to 5,000 per month pension after age 60",
+    "category": "pension",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 40
+    },
+    "documents": ["Aadhaar card", "Bank account details", "Mobile number"],
+    "apply_link": "Visit nearest bank branch",
+    "deadline": "ongoing"
+  },
+  {
+    "id": 7,
+    "name": "PM Jeevan Jyoti Bima Yojana",
+    "description": "Low cost life insurance",
+    "benefit": "2,00,000 insurance cover at just 436 per year",
+    "category": "insurance",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 50
+    },
+    "documents": ["Aadhaar card", "Bank account details"],
+    "apply_link": "Visit nearest bank branch",
+    "deadline": "ongoing"
+  },
+  {
+    "id": 8,
+    "name": "PM Suraksha Bima Yojana",
+    "description": "Accident insurance",
+    "benefit": "2,00,000 accident cover at just 20 per year",
+    "category": "insurance",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 70
+    },
+    "documents": ["Aadhaar card", "Bank account details"],
+    "apply_link": "Visit nearest bank branch",
+    "deadline": "ongoing"
+  },
+  {
+    "id": 9,
+    "name": "Telangana Rythu Bandhu",
+    "description": "Investment support for farmers in Telangana",
+    "benefit": "10,000 per acre per year",
+    "category": "agriculture",
+    "eligibility": {
+      "state": "telangana",
+      "occupation": "farmer",
+      "must_own_land": true
+    },
+    "documents": ["Aadhaar card", "Land passbook", "Bank account details"],
+    "apply_link": "Visit nearest agriculture office",
+    "deadline": "ongoing"
+  },
+  {
+    "id": 10,
+    "name": "PMEGP Self Employment Loan",
+    "description": "Subsidy loan for starting a new business",
+    "benefit": "15 to 35 percent subsidy on loans up to 25 lakh",
+    "category": "business",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 55
+    },
+    "documents": ["Aadhaar card", "PAN card", "Educational certificate", "Project report"],
+    "apply_link": "https://www.kviconline.gov.in",
+    "deadline": "ongoing"
+  }
+]
