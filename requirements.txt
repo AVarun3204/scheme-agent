@@ -1,0 +1,9 @@
+streamlit
+groq
+google-genai
+python-dotenv
+requests
+beautifulsoup4
+langchain
+langchain-google-genai
+langgraph
