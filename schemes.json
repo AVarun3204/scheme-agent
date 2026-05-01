@@ -12,6 +12,7 @@
     },
     "documents": ["Aadhaar card", "Ration card", "Income certificate", "BPL certificate"],
     "apply_link": "https://pmayg.nic.in",
+    "pdf_url": "",
     "deadline": "ongoing"
   },
   {
@@ -26,6 +27,7 @@
     },
     "documents": ["Aadhaar card", "Land ownership documents", "Bank account details"],
     "apply_link": "https://pmkisan.gov.in",
+    "pdf_url": "https://pmkisan.gov.in/Documents/RevisedPM-KISANOperationalGuidelines(English).pdf",
     "deadline": "ongoing"
   },
   {
@@ -40,6 +42,7 @@
     },
     "documents": ["Aadhaar card", "Ration card", "Income certificate"],
     "apply_link": "https://pmjay.gov.in",
+    "pdf_url": "https://pmjay.gov.in/sites/default/files/2019-09/Scheme-Booklet.pdf",
     "deadline": "ongoing"
   },
   {
@@ -55,6 +58,7 @@
     },
     "documents": ["Aadhaar card", "PAN card", "Business proof", "Bank statement"],
     "apply_link": "https://www.mudra.org.in",
+    "pdf_url": "",
     "deadline": "ongoing"
   },
   {
@@ -70,6 +74,7 @@
     },
     "documents": ["Aadhaar card", "Income certificate", "College admission letter"],
     "apply_link": "https://scholarships.gov.in",
+    "pdf_url": "",
     "deadline": "October 31 every year"
   },
   {
@@ -84,6 +89,7 @@
     },
     "documents": ["Aadhaar card", "Bank account details", "Mobile number"],
     "apply_link": "Visit nearest bank branch",
+    "pdf_url": "",
     "deadline": "ongoing"
   },
   {
@@ -98,6 +104,7 @@
     },
     "documents": ["Aadhaar card", "Bank account details"],
     "apply_link": "Visit nearest bank branch",
+    "pdf_url": "",
     "deadline": "ongoing"
   },
   {
@@ -112,6 +119,7 @@
     },
     "documents": ["Aadhaar card", "Bank account details"],
     "apply_link": "Visit nearest bank branch",
+    "pdf_url": "",
     "deadline": "ongoing"
   },
   {
@@ -127,6 +135,7 @@
     },
     "documents": ["Aadhaar card", "Land passbook", "Bank account details"],
     "apply_link": "Visit nearest agriculture office",
+    "pdf_url": "",
     "deadline": "ongoing"
   },
   {
@@ -141,6 +150,7 @@
     },
     "documents": ["Aadhaar card", "PAN card", "Educational certificate", "Project report"],
     "apply_link": "https://www.kviconline.gov.in",
+    "pdf_url": "",
     "deadline": "ongoing"
   }
 ]
