@@ -19,7 +19,7 @@
     "id": 2,
     "name": "PM Kisan Samman Nidhi",
     "description": "6000 per year cash support for farmers",
-    "benefit": "6,000 per year",
+    "benefit": "6,000 per year paid in 3 instalments",
     "category": "agriculture",
     "eligibility": {
       "occupation": "farmer",
@@ -27,7 +27,7 @@
     },
     "documents": ["Aadhaar card", "Land ownership documents", "Bank account details"],
     "apply_link": "https://pmkisan.gov.in",
-    "pdf_url": "https://pmkisan.gov.in/Documents/RevisedPM-KISANOperationalGuidelines(English).pdf",
+    "pdf_url": "",
     "deadline": "ongoing"
   },
   {
@@ -42,7 +42,7 @@
     },
     "documents": ["Aadhaar card", "Ration card", "Income certificate"],
     "apply_link": "https://pmjay.gov.in",
-    "pdf_url": "https://pmjay.gov.in/sites/default/files/2019-09/Scheme-Booklet.pdf",
+    "pdf_url": "",
     "deadline": "ongoing"
   },
   {
@@ -64,7 +64,7 @@
   {
     "id": 5,
     "name": "National Scholarship Portal",
-    "description": "Central scholarships for students",
+    "description": "Central scholarships for students from poor families",
     "benefit": "10,000 to 25,000 per year",
     "category": "education",
     "eligibility": {
@@ -95,7 +95,7 @@
   {
     "id": 7,
     "name": "PM Jeevan Jyoti Bima Yojana",
-    "description": "Low cost life insurance",
+    "description": "Low cost life insurance for working age people",
     "benefit": "2,00,000 insurance cover at just 436 per year",
     "category": "insurance",
     "eligibility": {
@@ -110,7 +110,7 @@
   {
     "id": 8,
     "name": "PM Suraksha Bima Yojana",
-    "description": "Accident insurance",
+    "description": "Accident insurance for all citizens",
     "benefit": "2,00,000 accident cover at just 20 per year",
     "category": "insurance",
     "eligibility": {
@@ -150,6 +150,398 @@
     },
     "documents": ["Aadhaar card", "PAN card", "Educational certificate", "Project report"],
     "apply_link": "https://www.kviconline.gov.in",
+    "pdf_url": "",
+    "deadline": "ongoing"
+  },
+  {
+    "id": 11,
+    "name": "PM Ujjwala Yojana",
+    "description": "Free LPG gas connection for BPL women",
+    "benefit": "Free LPG connection plus first cylinder free",
+    "category": "household",
+    "eligibility": {
+      "gender": "female",
+      "bpl_required": true
+    },
+    "documents": ["Aadhaar card", "BPL ration card", "Address proof", "Passport photo"],
+    "apply_link": "https://www.pmujjwalayojana.com",
+    "pdf_url": "",
+    "deadline": "ongoing"
+  },
+  {
+    "id": 12,
+    "name": "Sukanya Samriddhi Yojana",
+    "description": "High interest savings scheme for girl child",
+    "benefit": "8.2 percent interest rate on savings tax free",
+    "category": "savings",
+    "eligibility": {
+      "gender": "female",
+      "max_age": 10
+    },
+    "documents": ["Girl child birth certificate", "Parent Aadhaar card", "Parent PAN card"],
+    "apply_link": "Visit nearest post office or bank",
+    "pdf_url": "",
+    "deadline": "ongoing"
+  },
+  {
+    "id": 13,
+    "name": "PM SVANidhi Street Vendor Loan",
+    "description": "Working capital loan for street vendors",
+    "benefit": "10,000 initial loan up to 50,000 after repayment",
+    "category": "business",
+    "eligibility": {
+      "occupation": "street_vendor",
+      "min_age": 18
+    },
+    "documents": ["Aadhaar card", "Vendor certificate", "Bank account details"],
+    "apply_link": "https://pmsvanidhi.mohua.gov.in",
+    "pdf_url": "",
+    "deadline": "ongoing"
+  },
+  {
+    "id": 14,
+    "name": "Telangana KCR Kit",
+    "description": "Baby kit and cash support for pregnant women in Telangana",
+    "benefit": "12,000 cash plus baby kit worth 3,000",
+    "category": "women_welfare",
+    "eligibility": {
+      "state": "telangana",
+      "gender": "female"
+    },
+    "documents": ["Aadhaar card", "Hospital registration card", "Bank account details"],
+    "apply_link": "Visit nearest government hospital",
+    "pdf_url": "",
+    "deadline": "ongoing"
+  },
+  {
+    "id": 15,
+    "name": "Telangana Aasara Pension",
+    "description": "Monthly pension for poor elderly disabled and widows in Telangana",
+    "benefit": "2,016 to 3,016 per month depending on category",
+    "category": "pension",
+    "eligibility": {
+      "state": "telangana",
+      "min_age": 57,
+      "bpl_required": true
+    },
+    "documents": ["Aadhaar card", "Age proof", "Income certificate", "Bank account details"],
+    "apply_link": "Visit nearest MeeSeva center",
+    "pdf_url": "",
+    "deadline": "ongoing"
+  },
+  {
+    "id": 16,
+    "name": "Telangana Kalyana Lakshmi",
+    "description": "Financial support for marriage of SC ST BC minority girls in Telangana",
+    "benefit": "1,00,116 for SC ST and 51,116 for BC minority",
+    "category": "women_welfare",
+    "eligibility": {
+      "state": "telangana",
+      "gender": "female",
+      "min_age": 18,
+      "max_age": 35
+    },
+    "documents": ["Aadhaar card", "Caste certificate", "Marriage certificate", "Income certificate"],
+    "apply_link": "https://telanganaepass.cgg.gov.in",
+    "pdf_url": "",
+    "deadline": "Apply within 1 year of marriage"
+  },
+  {
+    "id": 17,
+    "name": "Telangana TS ePass Scholarship",
+    "description": "Full scholarship for SC ST BC students in Telangana colleges",
+    "benefit": "Full tuition fee plus maintenance allowance",
+    "category": "education",
+    "eligibility": {
+      "state": "telangana",
+      "enrolled_in_college": true,
+      "max_annual_family_income": 200000
+    },
+    "documents": ["Aadhaar card", "Caste certificate", "Income certificate", "College admission letter"],
+    "apply_link": "https://telanganaepass.cgg.gov.in",
+    "pdf_url": "",
+    "deadline": "September every year"
+  },
+  {
+    "id": 18,
+    "name": "PM Jan Dhan Yojana",
+    "description": "Free zero balance bank account for all citizens",
+    "benefit": "Free bank account plus 10,000 overdraft plus accident insurance",
+    "category": "banking",
+    "eligibility": {
+      "min_age": 10
+    },
+    "documents": ["Aadhaar card", "Passport photo"],
+    "apply_link": "Visit nearest bank branch",
+    "pdf_url": "",
+    "deadline": "ongoing"
+  },
+  {
+    "id": 19,
+    "name": "Kisan Credit Card",
+    "description": "Flexible credit for farmers for agricultural needs",
+    "benefit": "Credit up to 3 lakh at 4 percent interest rate",
+    "category": "agriculture",
+    "eligibility": {
+      "occupation": "farmer",
+      "must_own_land": true,
+      "min_age": 18
+    },
+    "documents": ["Aadhaar card", "Land records", "Bank account details", "Passport photo"],
+    "apply_link": "Visit nearest bank branch",
+    "pdf_url": "",
+    "deadline": "ongoing"
+  },
+  {
+    "id": 20,
+    "name": "NREGA Job Card",
+    "description": "Guaranteed 100 days of paid work per year for rural families",
+    "benefit": "100 days of work at minimum wage per year",
+    "category": "employment",
+    "eligibility": {
+      "residence": "rural",
+      "min_age": 18
+    },
+    "documents": ["Aadhaar card", "Ration card", "Bank account details", "Passport photo"],
+    "apply_link": "Visit nearest Gram Panchayat office",
+    "pdf_url": "",
+    "deadline": "ongoing"
+  },
+  {
+    "id": 21,
+    "name": "PM Fasal Bima Yojana",
+    "description": "Crop insurance for farmers against natural disasters",
+    "benefit": "Full crop loss compensation at very low premium",
+    "category": "agriculture",
+    "eligibility": {
+      "occupation": "farmer",
+      "must_own_land": true
+    },
+    "documents": ["Aadhaar card", "Land records", "Bank account details", "Sowing certificate"],
+    "apply_link": "https://pmfby.gov.in",
+    "pdf_url": "",
+    "deadline": "Before each crop season"
+  },
+  {
+    "id": 22,
+    "name": "Pradhan Mantri Vaya Vandana Yojana",
+    "description": "Pension scheme for senior citizens above 60",
+    "benefit": "10,000 per month pension guaranteed for 10 years",
+    "category": "pension",
+    "eligibility": {
+      "min_age": 60
+    },
+    "documents": ["Aadhaar card", "Age proof", "Bank account details", "PAN card"],
+    "apply_link": "https://licindia.in",
+    "pdf_url": "",
+    "deadline": "ongoing"
+  },
+  {
+    "id": 23,
+    "name": "Stand Up India",
+    "description": "Business loans for SC ST women entrepreneurs",
+    "benefit": "Loans from 10 lakh to 1 crore for new businesses",
+    "category": "business",
+    "eligibility": {
+      "gender": "female",
+      "min_age": 18,
+      "occupation": "self_employed"
+    },
+    "documents": ["Aadhaar card", "PAN card", "Caste certificate", "Business plan", "Bank statement"],
+    "apply_link": "https://www.standupmitra.in",
+    "pdf_url": "",
+    "deadline": "ongoing"
+  },
+  {
+    "id": 24,
+    "name": "PM Scholarship Scheme for Central Armed Police Forces",
+    "description": "Scholarship for children of police and defence personnel",
+    "benefit": "2,500 per month for boys and 3,000 per month for girls",
+    "category": "education",
+    "eligibility": {
+      "enrolled_in_college": true,
+      "max_age": 25
+    },
+    "documents": ["Aadhaar card", "Parent service certificate", "College admission letter", "Marksheet"],
+    "apply_link": "https://scholarships.gov.in",
+    "pdf_url": "",
+    "deadline": "October every year"
+  },
+  {
+    "id": 25,
+    "name": "Telangana Unemployment Allowance",
+    "description": "Monthly allowance for educated unemployed youth in Telangana",
+    "benefit": "3,016 per month for graduates and above",
+    "category": "employment",
+    "eligibility": {
+      "state": "telangana",
+      "occupation": "unemployed",
+      "min_age": 18,
+      "max_age": 35,
+      "max_annual_income": 200000
+    },
+    "documents": ["Aadhaar card", "Educational certificate", "Income certificate", "Employment exchange card"],
+    "apply_link": "Visit nearest employment exchange office",
+    "pdf_url": "",
+    "deadline": "ongoing"
+  },
+  {
+    "id": 26,
+    "name": "PM Garib Kalyan Anna Yojana",
+    "description": "Free food grains for poor families",
+    "benefit": "5 kg free rice or wheat per person per month",
+    "category": "food",
+    "eligibility": {
+      "bpl_required": true
+    },
+    "documents": ["Aadhaar card", "Ration card"],
+    "apply_link": "Visit nearest ration shop with ration card",
+    "pdf_url": "",
+    "deadline": "ongoing"
+  },
+  {
+    "id": 27,
+    "name": "Telangana SC ST BC Overseas Scholarship",
+    "description": "Full scholarship to study abroad for SC ST BC students from Telangana",
+    "benefit": "Full tuition fee plus living allowance for studying abroad",
+    "category": "education",
+    "eligibility": {
+      "state": "telangana",
+      "enrolled_in_college": true,
+      "max_annual_family_income": 500000
+    },
+    "documents": ["Aadhaar card", "Caste certificate", "University admission letter", "Income certificate"],
+    "apply_link": "https://telanganaepass.cgg.gov.in",
+    "pdf_url": "",
+    "deadline": "July every year"
+  },
+  {
+    "id": 28,
+    "name": "National Family Benefit Scheme",
+    "description": "One time payment to BPL families on death of breadwinner",
+    "benefit": "20,000 one time payment",
+    "category": "welfare",
+    "eligibility": {
+      "bpl_required": true,
+      "max_annual_income": 100000
+    },
+    "documents": ["Aadhaar card", "BPL card", "Death certificate of breadwinner", "Bank account details"],
+    "apply_link": "Visit nearest district social welfare office",
+    "pdf_url": "",
+    "deadline": "Apply within 90 days of death"
+  },
+  {
+    "id": 29,
+    "name": "PM Kaushal Vikas Yojana",
+    "description": "Free skill training and certification for youth",
+    "benefit": "Free skill training plus certificate plus job placement help",
+    "category": "employment",
+    "eligibility": {
+      "min_age": 15,
+      "max_age": 45,
+      "occupation": "unemployed"
+    },
+    "documents": ["Aadhaar card", "Educational certificate", "Passport photo"],
+    "apply_link": "https://www.pmkvyofficial.org",
+    "pdf_url": "",
+    "deadline": "ongoing"
+  },
+  {
+    "id": 30,
+    "name": "Telangana Shaadi Mubarak",
+    "description": "Financial support for marriage of Muslim girls in Telangana",
+    "benefit": "1,00,116 financial assistance",
+    "category": "women_welfare",
+    "eligibility": {
+      "state": "telangana",
+      "gender": "female",
+      "min_age": 18
+    },
+    "documents": ["Aadhaar card", "Religion certificate", "Marriage certificate", "Income certificate"],
+    "apply_link": "Visit nearest MeeSeva center",
+    "pdf_url": "",
+    "deadline": "Apply within 1 year of marriage"
+  },
+  {
+    "id": 31,
+    "name": "Deen Dayal Upadhyaya Grameen Kaushalya Yojana",
+    "description": "Free residential skill training for rural youth",
+    "benefit": "Free training accommodation food and placement assistance",
+    "category": "employment",
+    "eligibility": {
+      "min_age": 15,
+      "max_age": 35,
+      "occupation": "unemployed"
+    },
+    "documents": ["Aadhaar card", "Educational certificate", "BPL card if available"],
+    "apply_link": "https://ddugky.gov.in",
+    "pdf_url": "",
+    "deadline": "ongoing"
+  },
+  {
+    "id": 32,
+    "name": "PM Awas Yojana Urban",
+    "description": "Subsidy on home loan for urban poor to buy or build house",
+    "benefit": "2.67 lakh subsidy on home loan interest",
+    "category": "housing",
+    "eligibility": {
+      "max_annual_income": 600000,
+      "min_age": 18
+    },
+    "documents": ["Aadhaar card", "Income certificate", "Property documents", "Bank account details"],
+    "apply_link": "https://pmaymis.gov.in",
+    "pdf_url": "",
+    "deadline": "ongoing"
+  },
+  {
+    "id": 33,
+    "name": "Telangana Cheyutha Scheme",
+    "description": "Financial support for BC ST SC minority women entrepreneurs in Telangana",
+    "benefit": "1,00,000 grant for starting small business",
+    "category": "business",
+    "eligibility": {
+      "state": "telangana",
+      "gender": "female",
+      "min_age": 45,
+      "max_age": 60,
+      "max_annual_income": 150000
+    },
+    "documents": ["Aadhaar card", "Caste certificate", "Income certificate", "Bank account details"],
+    "apply_link": "Visit nearest MeeSeva center",
+    "pdf_url": "",
+    "deadline": "ongoing"
+  },
+  {
+    "id": 34,
+    "name": "E Shram Card",
+    "description": "National database registration for unorganised workers",
+    "benefit": "2,00,000 accident insurance plus priority for all government schemes",
+    "category": "welfare",
+    "eligibility": {
+      "min_age": 16,
+      "max_age": 59,
+      "occupation": "self_employed"
+    },
+    "documents": ["Aadhaar card", "Bank account details", "Mobile number linked to Aadhaar"],
+    "apply_link": "https://eshram.gov.in",
+    "pdf_url": "",
+    "deadline": "ongoing"
+  },
+  {
+    "id": 35,
+    "name": "Telangana Rythu Bima",
+    "description": "Life insurance for farmers in Telangana",
+    "benefit": "5,00,000 life insurance completely free for farmers",
+    "category": "insurance",
+    "eligibility": {
+      "state": "telangana",
+      "occupation": "farmer",
+      "min_age": 18,
+      "max_age": 59,
+      "must_own_land": true
+    },
+    "documents": ["Aadhaar card", "Land passbook", "Bank account details"],
+    "apply_link": "Visit nearest agriculture office",
     "pdf_url": "",
     "deadline": "ongoing"
   }
