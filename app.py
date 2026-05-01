@@ -5,10 +5,10 @@ from groq import Groq
 import json
 from matcher import match_schemes
 from checklist import generate_checklist, get_priority_docs
+from tracker import (save_application, get_user_applications,
+                     update_status, STATUS_OPTIONS, STATUS_EMOJI, delete_application)
 
-load_dotenv()
-
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+load_dotenv(override=True)
 
 SYSTEM_PROMPT = """You are a helpful Indian government scheme advisor called SchemeBot.
 Your job is to help Indian citizens discover government schemes and subsidies they are eligible for.
@@ -47,7 +47,9 @@ def extract_profile(text):
     return None
 
 def chat(messages):
-    response = client.chat.completions.create(
+    load_dotenv(override=True)
+    fresh_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+    response = fresh_client.chat.completions.create(
         model="llama-3.3-70b-versatile",
         messages=messages,
         temperature=0.7,
@@ -158,6 +160,8 @@ if "user_name" not in st.session_state:
     st.session_state.user_name = "Friend"
 if "started" not in st.session_state:
     st.session_state.started = False
+if "show_tracker" not in st.session_state:
+    st.session_state.show_tracker = False
 
 if not st.session_state.started:
     col1, col2, col3 = st.columns([1, 2, 1])
@@ -225,16 +229,13 @@ if st.session_state.profile_found:
         for i, scheme in enumerate(schemes, 1):
             show_scheme_card(scheme, i)
 
-        # Document Checklist Section
+        # Document Checklist
         st.markdown("---")
         st.markdown("### 📋 Your Complete Document Checklist")
         st.markdown("*Collect these documents to apply for all your schemes*")
-
         checklist = generate_checklist(schemes)
         priority = get_priority_docs(checklist)
-
         st.info(f"You need **{len(checklist)} documents** in total for all {len(schemes)} schemes. Start collecting them today!")
-
         for doc, info in priority:
             guide = info["guide"]
             with st.expander(f"✅ {doc} — needed for {len(info['needed_for'])} scheme(s)"):
@@ -247,6 +248,70 @@ if st.session_state.profile_found:
                 if guide.get('link'):
                     st.write(f"**🔗 Link:** {guide['link']}")
                 st.write(f"**📌 Needed for:** {', '.join(info['needed_for'])}")
+
+        # Application Tracker
+        st.markdown("---")
+        st.markdown("### 📊 Track Your Applications")
+        st.markdown("*Save schemes and track your application status*")
+
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("💾 Save All Schemes to Tracker", use_container_width=True):
+                saved_count = 0
+                for scheme in schemes:
+                    result = save_application(
+                        name,
+                        scheme["name"],
+                        scheme["benefit"],
+                        scheme["apply_link"]
+                    )
+                    if result:
+                        saved_count += 1
+                if saved_count > 0:
+                    st.success(f"✅ Saved {saved_count} schemes to your tracker!")
+                else:
+                    st.info("All schemes already saved!")
+
+        with col2:
+            if st.button("📊 View My Applications", use_container_width=True):
+                st.session_state.show_tracker = not st.session_state.show_tracker
+                st.rerun()
+
+        if st.session_state.show_tracker:
+            user_apps = get_user_applications(name)
+            if user_apps:
+                st.markdown(f"#### {name}'s Applications ({len(user_apps)} total)")
+                for app in user_apps:
+                    emoji = STATUS_EMOJI.get(app["status"], "⬜")
+                    with st.expander(f"{emoji} {app['scheme_name']} — {app['status']}"):
+                        st.write(f"**💰 Benefit:** {app['scheme_benefit']}")
+                        st.write(f"**📅 Saved on:** {app['date_saved']}")
+                        if app['date_applied']:
+                            st.write(f"**📤 Applied on:** {app['date_applied']}")
+                        new_status = st.selectbox(
+                            "Update status:",
+                            STATUS_OPTIONS,
+                            index=STATUS_OPTIONS.index(app["status"]),
+                            key=f"status_{app['id']}"
+                        )
+                        notes = st.text_input(
+                            "Add notes:",
+                            value=app.get("notes", ""),
+                            key=f"notes_{app['id']}"
+                        )
+                        col_a, col_b = st.columns(2)
+                        with col_a:
+                            if st.button("💾 Update", key=f"update_{app['id']}"):
+                                update_status(app["id"], new_status, notes)
+                                st.success("Updated!")
+                                st.rerun()
+                        with col_b:
+                            if st.button("🗑️ Delete", key=f"delete_{app['id']}"):
+                                delete_application(app["id"])
+                                st.success("Deleted!")
+                                st.rerun()
+            else:
+                st.info("No applications saved yet. Click 'Save All Schemes' first!")
 
         st.markdown("""
         <div style="
@@ -261,12 +326,13 @@ if st.session_state.profile_found:
             Make sure all your documents are genuine before applying.
         </div>
         """, unsafe_allow_html=True)
+
     else:
         st.warning("No matching schemes found for your profile. Please visit your nearest government office.")
 
     st.markdown("<br>", unsafe_allow_html=True)
     if st.button("🔄 Check for Another Person", use_container_width=True):
         for key in ["messages", "chat_history", "profile_found",
-                    "matched_schemes", "user_name", "started"]:
+                    "matched_schemes", "user_name", "started", "show_tracker"]:
             del st.session_state[key]
         st.rerun()

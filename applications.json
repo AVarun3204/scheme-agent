@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "user_name": "Varun",
+    "scheme_name": "PM Kisan Samman Nidhi",
+    "scheme_benefit": "6,000 per year",
+    "apply_link": "https://pmkisan.gov.in",
+    "status": "Applied",
+    "date_saved": "01-05-2026",
+    "date_applied": "01-05-2026",
+    "notes": "Applied online at pmkisan.gov.in"
+  },
+  {
+    "id": 2,
+    "user_name": "Varun",
+    "scheme_name": "Telangana Rythu Bandhu",
+    "scheme_benefit": "10,000 per acre",
+    "apply_link": "Visit agriculture office",
+    "status": "Documents Submitted",
+    "date_saved": "01-05-2026",
+    "date_applied": "",
+    "notes": "Submitted at local office"
+  },
+  {
+    "id": 3,
+    "user_name": "Varun",
+    "scheme_name": "Ayushman Bharat PM-JAY",
+    "scheme_benefit": "5 lakh health cover",
+    "apply_link": "https://pmjay.gov.in",
+    "status": "Not Applied",
+    "date_saved": "01-05-2026",
+    "date_applied": "",
+    "notes": ""
+  }
+]
