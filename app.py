@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from groq import Groq
 import json
 from matcher import match_schemes
+from checklist import generate_checklist, get_priority_docs
 
 load_dotenv()
 
@@ -96,18 +97,19 @@ def show_scheme_card(scheme, index):
         </div>
         """, unsafe_allow_html=True)
 
+        with st.expander("💡 Get Personalized Advice for this Scheme"):
+            st.info("Gemini AI analysis will be available on final demo day. For now, check the documents section below and visit the official link to apply.")
+
         with st.expander("📄 View Documents Needed"):
             for doc in scheme['documents']:
                 st.write(f"• {doc}")
 
-# ─── Page Config ───────────────────────────────────────────
 st.set_page_config(
     page_title="Scheme Agent — Find Your Government Benefits",
     page_icon="🏛️",
     layout="centered"
 )
 
-# ─── Custom CSS ────────────────────────────────────────────
 st.markdown("""
 <style>
     .main { background-color: #f8f9ff; }
@@ -122,7 +124,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ─── Header ────────────────────────────────────────────────
 st.markdown("""
 <div style="text-align: center; padding: 30px 0 10px 0;">
     <h1 style="color: #4a4a8a; font-size: 2.5em;">🏛️ Scheme Agent</h1>
@@ -145,26 +146,19 @@ st.markdown("""
 <hr style="border: 1px solid #e0e0e0; margin: 20px 0;">
 """, unsafe_allow_html=True)
 
-# ─── Session State Setup ────────────────────────────────────
 if "messages" not in st.session_state:
     st.session_state.messages = [{"role": "system", "content": SYSTEM_PROMPT}]
-
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
-
 if "profile_found" not in st.session_state:
     st.session_state.profile_found = False
-
 if "matched_schemes" not in st.session_state:
     st.session_state.matched_schemes = []
-
 if "user_name" not in st.session_state:
     st.session_state.user_name = "Friend"
-
 if "started" not in st.session_state:
     st.session_state.started = False
 
-# ─── Start Button ───────────────────────────────────────────
 if not st.session_state.started:
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
@@ -179,14 +173,10 @@ if not st.session_state.started:
             st.session_state.chat_history.append({"role": "assistant", "content": response})
             st.rerun()
 
-# ─── Chat Interface ─────────────────────────────────────────
 if st.session_state.started and not st.session_state.profile_found:
-
-    # Show chat history
     for msg in st.session_state.chat_history:
         if msg["role"] == "assistant":
             with st.chat_message("assistant", avatar="🤖"):
-                # Hide PROFILE_COMPLETE line from user
                 display_text = msg["content"]
                 if "PROFILE_COMPLETE:" in display_text:
                     display_text = "Perfect! I have all the information I need. Let me search for your schemes now..."
@@ -195,29 +185,21 @@ if st.session_state.started and not st.session_state.profile_found:
             with st.chat_message("user", avatar="👤"):
                 st.write(msg["content"])
 
-    # Input box
     user_input = st.chat_input("Type your answer here...")
 
     if user_input:
-        # Add user message
         st.session_state.chat_history.append({"role": "user", "content": user_input})
         st.session_state.messages.append({"role": "user", "content": user_input})
-
-        # Get bot response
         response = chat(st.session_state.messages)
         st.session_state.messages.append({"role": "assistant", "content": response})
         st.session_state.chat_history.append({"role": "assistant", "content": response})
-
-        # Check if profile complete
         profile = extract_profile(response)
         if profile:
             st.session_state.profile_found = True
             st.session_state.user_name = profile.get("name", "Friend")
             st.session_state.matched_schemes = match_schemes(profile)
-
         st.rerun()
 
-# ─── Results Page ───────────────────────────────────────────
 if st.session_state.profile_found:
     name = st.session_state.user_name
     schemes = st.session_state.matched_schemes
@@ -242,6 +224,29 @@ if st.session_state.profile_found:
         st.markdown("### 📋 Your Eligible Schemes")
         for i, scheme in enumerate(schemes, 1):
             show_scheme_card(scheme, i)
+
+        # Document Checklist Section
+        st.markdown("---")
+        st.markdown("### 📋 Your Complete Document Checklist")
+        st.markdown("*Collect these documents to apply for all your schemes*")
+
+        checklist = generate_checklist(schemes)
+        priority = get_priority_docs(checklist)
+
+        st.info(f"You need **{len(checklist)} documents** in total for all {len(schemes)} schemes. Start collecting them today!")
+
+        for doc, info in priority:
+            guide = info["guide"]
+            with st.expander(f"✅ {doc} — needed for {len(info['needed_for'])} scheme(s)"):
+                st.write(f"**📝 What is it:** {guide['description']}")
+                st.write(f"**🏛️ How to get it:** {guide['how_to_get']}")
+                st.write(f"**⏰ Time needed:** {guide['time_needed']}")
+                st.write(f"**💰 Cost:** {guide['cost']}")
+                if guide.get('tip'):
+                    st.success(f"💡 Tip: {guide['tip']}")
+                if guide.get('link'):
+                    st.write(f"**🔗 Link:** {guide['link']}")
+                st.write(f"**📌 Needed for:** {', '.join(info['needed_for'])}")
 
         st.markdown("""
         <div style="
