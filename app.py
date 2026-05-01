@@ -7,6 +7,7 @@ from matcher import match_schemes
 from checklist import generate_checklist, get_priority_docs
 from tracker import (save_application, get_user_applications,
                      update_status, STATUS_OPTIONS, STATUS_EMOJI, delete_application)
+from translator import LANGUAGES, translate_text, translate_scheme, get_greeting
 
 load_dotenv(override=True)
 
@@ -148,6 +149,16 @@ st.markdown("""
 <hr style="border: 1px solid #e0e0e0; margin: 20px 0;">
 """, unsafe_allow_html=True)
 
+# Language Selector
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
+    selected_lang = st.selectbox(
+        "🌐 Select Language / भाषा चुनें / భాష ఎంచుకోండి",
+        list(LANGUAGES.keys()),
+        index=0
+    )
+st.markdown("---")
+
 if "messages" not in st.session_state:
     st.session_state.messages = [{"role": "system", "content": SYSTEM_PROMPT}]
 if "chat_history" not in st.session_state:
@@ -162,6 +173,10 @@ if "started" not in st.session_state:
     st.session_state.started = False
 if "show_tracker" not in st.session_state:
     st.session_state.show_tracker = False
+if "selected_language" not in st.session_state:
+    st.session_state.selected_language = "English"
+
+st.session_state.selected_language = selected_lang
 
 if not st.session_state.started:
     col1, col2, col3 = st.columns([1, 2, 1])
@@ -207,6 +222,7 @@ if st.session_state.started and not st.session_state.profile_found:
 if st.session_state.profile_found:
     name = st.session_state.user_name
     schemes = st.session_state.matched_schemes
+    lang = st.session_state.selected_language
 
     st.markdown(f"""
     <div style="
@@ -226,7 +242,15 @@ if st.session_state.profile_found:
 
     if schemes:
         st.markdown("### 📋 Your Eligible Schemes")
-        for i, scheme in enumerate(schemes, 1):
+
+        # Translate if needed
+        if lang != "English":
+            with st.spinner(f"Translating to {lang.split(' - ')[0]}... please wait"):
+                display_schemes = [translate_scheme(s, lang) for s in schemes]
+        else:
+            display_schemes = schemes
+
+        for i, scheme in enumerate(display_schemes, 1):
             show_scheme_card(scheme, i)
 
         # Document Checklist
@@ -333,6 +357,7 @@ if st.session_state.profile_found:
     st.markdown("<br>", unsafe_allow_html=True)
     if st.button("🔄 Check for Another Person", use_container_width=True):
         for key in ["messages", "chat_history", "profile_found",
-                    "matched_schemes", "user_name", "started", "show_tracker"]:
+                    "matched_schemes", "user_name", "started",
+                    "show_tracker", "selected_language"]:
             del st.session_state[key]
         st.rerun()
