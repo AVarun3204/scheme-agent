@@ -73,6 +73,9 @@ But **95% of eligible citizens never apply** — because:
 ---
 
 ## 🚀 How It Works
+
+User Opens App → Selects Language → AI asks 10 questions → Matches 35+ schemes → Shows benefits → Document checklist → Track applications
+
 ---
 
 ## 📸 Demo
