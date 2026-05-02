@@ -7,7 +7,7 @@ from matcher import match_schemes
 from checklist import generate_checklist, get_priority_docs
 from tracker import (save_application, get_user_applications,
                      update_status, STATUS_OPTIONS, STATUS_EMOJI, delete_application)
-from translator import LANGUAGES, translate_text, translate_scheme, get_greeting
+from translator import LANGUAGES, translate_schemes_bulk, get_greeting
 
 load_dotenv(override=True)
 
@@ -59,6 +59,29 @@ def chat(messages):
     return response.choices[0].message.content
 
 def show_scheme_card(scheme, index):
+    # Check if apply_link is a real URL or offline instruction
+    apply_link = scheme['apply_link']
+    if apply_link.startswith('http'):
+        apply_button = f'''<a href="{apply_link}" target="_blank" style="
+            display: inline-block;
+            background: #4a4a8a;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 14px;
+            margin-top: 10px;
+        ">🔗 Apply Now</a>'''
+    else:
+        apply_button = f'''<p style="
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 8px 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+            font-size: 14px;
+        ">📍 {apply_link}</p>'''
+
     with st.container():
         st.markdown(f"""
         <div style="
@@ -86,16 +109,7 @@ def show_scheme_card(scheme, index):
                 <strong style="color: #276749;">💰 Benefit: {scheme['benefit']}</strong>
             </div>
             <p style="color: #e53e3e; margin: 5px 0;">⏰ Deadline: {scheme['deadline']}</p>
-            <a href="{scheme['apply_link']}" target="_blank" style="
-                display: inline-block;
-                background: #4a4a8a;
-                color: white;
-                padding: 8px 20px;
-                border-radius: 20px;
-                text-decoration: none;
-                font-size: 14px;
-                margin-top: 10px;
-            ">🔗 Apply Now</a>
+            {apply_button}
         </div>
         </div>
         """, unsafe_allow_html=True)
@@ -246,7 +260,7 @@ if st.session_state.profile_found:
         # Translate if needed
         if lang != "English":
             with st.spinner(f"Translating to {lang.split(' - ')[0]}... please wait"):
-                display_schemes = [translate_scheme(s, lang) for s in schemes]
+                display_schemes = translate_schemes_bulk(schemes, lang)
         else:
             display_schemes = schemes
 
