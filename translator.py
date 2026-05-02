@@ -34,10 +34,9 @@ def translate_text(text, target_language):
     """Translate text to target language using Groq AI"""
     if target_language == "English" or target_language == "en":
         return text
-    
-    # Get language name without the native script part
+
     lang_name = target_language.split(" - ")[0] if " - " in target_language else target_language
-    
+
     try:
         client = Groq(api_key=os.getenv("GROQ_API_KEY"))
         response = client.chat.completions.create(
@@ -63,17 +62,75 @@ def translate_text(text, target_language):
         )
         return response.choices[0].message.content
     except Exception as e:
-        return text  # Return original if translation fails
+        return text
+
+def translate_schemes_bulk(schemes, target_language):
+    """Translate all schemes in one single API call — much faster"""
+    if target_language == "English":
+        return schemes
+
+    lang_name = target_language.split(" - ")[0] if " - " in target_language else target_language
+
+    # Build one big text with all schemes
+    combined = ""
+    for i, scheme in enumerate(schemes):
+        combined += f"SCHEME_{i}_DESC: {scheme['description']}\n"
+        combined += f"SCHEME_{i}_BENEFIT: {scheme['benefit']}\n"
+
+    try:
+        client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[
+                {
+                    "role": "system",
+                    "content": f"""Translate the following text to {lang_name}.
+Keep the format exactly as is with SCHEME_N_DESC and SCHEME_N_BENEFIT labels.
+Keep numbers, rupee amounts and URLs unchanged.
+Return ONLY the translated text."""
+                },
+                {
+                    "role": "user",
+                    "content": combined
+                }
+            ],
+            temperature=0.3,
+            max_tokens=3000
+        )
+
+        result = response.choices[0].message.content
+        translated_schemes = []
+
+        for i, scheme in enumerate(schemes):
+            translated = scheme.copy()
+
+            desc_key = f"SCHEME_{i}_DESC:"
+            benefit_key = f"SCHEME_{i}_BENEFIT:"
+            next_key = f"SCHEME_{i+1}_DESC:"
+
+            if desc_key in result:
+                start = result.index(desc_key) + len(desc_key)
+                end = result.index(benefit_key) if benefit_key in result else len(result)
+                translated["description"] = result[start:end].strip()
+
+            if benefit_key in result:
+                start = result.index(benefit_key) + len(benefit_key)
+                end = result.index(next_key) if next_key in result else len(result)
+                translated["benefit"] = result[start:end].strip()
+
+            translated_schemes.append(translated)
+
+        return translated_schemes
+
+    except Exception as e:
+        return schemes
 
 def translate_scheme(scheme, target_language):
-    """Translate a scheme's description and benefit"""
+    """Translate a single scheme"""
     if target_language == "English":
         return scheme
-    
-    translated = scheme.copy()
-    translated["description"] = translate_text(scheme["description"], target_language)
-    translated["benefit"] = translate_text(scheme["benefit"], target_language)
-    return translated
+    result = translate_schemes_bulk([scheme], target_language)
+    return result[0]
 
 def get_greeting(language):
     """Get greeting in different languages"""
@@ -92,17 +149,17 @@ def get_greeting(language):
     return greetings.get(language, greetings["English"])
 
 if __name__ == "__main__":
-    print("Testing translator...\n")
-    
-    test_text = "You qualify for PM Kisan Samman Nidhi. Benefit: 6,000 per year paid in 3 instalments."
-    
-    # Test Hindi
+    print("Testing bulk translator...\n")
+
+    test_schemes = [
+        {"description": "Free house for rural families", "benefit": "1,20,000 for construction"},
+        {"description": "Cash support for farmers", "benefit": "6,000 per year"}
+    ]
+
     print("Hindi translation:")
-    result = translate_text(test_text, "Hindi - हिंदी")
-    print(result)
-    
-    print("\nTelugu translation:")
-    result = translate_text(test_text, "Telugu - తెలుగు")
-    print(result)
-    
-    print("\n✅ Translator working!")
+    result = translate_schemes_bulk(test_schemes, "Hindi - हिंदी")
+    for s in result:
+        print(f"  DESC: {s['description']}")
+        print(f"  BENEFIT: {s['benefit']}")
+
+    print("\n✅ Bulk translator working!")
