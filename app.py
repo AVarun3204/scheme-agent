@@ -8,6 +8,7 @@ from checklist import generate_checklist, get_priority_docs
 from tracker import (save_application, get_user_applications,
                      update_status, STATUS_OPTIONS, STATUS_EMOJI, delete_application)
 from translator import LANGUAGES, get_greeting
+from stats import get_scheme_stats, get_application_stats
 import translator as translator_module
 translate_schemes_bulk = translator_module.translate_schemes_bulk
 
@@ -61,7 +62,6 @@ def chat(messages):
     return response.choices[0].message.content
 
 def show_scheme_card(scheme, index):
-    # Check if apply_link is a real URL or offline instruction
     apply_link = scheme['apply_link']
     if apply_link.startswith('http'):
         apply_button = f'''<a href="{apply_link}" target="_blank" style="
@@ -128,6 +128,29 @@ st.set_page_config(
     page_icon="🏛️",
     layout="centered"
 )
+
+# Sidebar with stats
+with st.sidebar:
+    st.markdown("### 📊 Live Statistics")
+    stats = get_scheme_stats()
+    st.metric("Total Schemes", stats["total_schemes"])
+    st.metric("Central Schemes", stats["central_schemes"])
+    st.metric("Telangana Schemes", stats["telangana_schemes"])
+    st.metric("Online Apply Links", stats["online_schemes"])
+    st.markdown("---")
+    st.markdown("### 📋 Categories")
+    for cat, count in sorted(stats["categories"].items(), key=lambda x: x[1], reverse=True):
+        st.write(f"**{cat.replace('_', ' ').title()}:** {count}")
+    st.markdown("---")
+    app_stats = get_application_stats()
+    st.markdown("### 👥 Usage Stats")
+    st.metric("Total Applications", app_stats["total_applications"])
+    st.metric("Unique Users", app_stats["unique_users"])
+    st.markdown("---")
+    st.markdown("### 🌐 Languages")
+    st.write("**23** Indian languages supported")
+    st.markdown("---")
+    st.info("Built for Milan AI Week Hackathon 2026 🚀")
 
 st.markdown("""
 <style>
@@ -259,7 +282,6 @@ if st.session_state.profile_found:
     if schemes:
         st.markdown("### 📋 Your Eligible Schemes")
 
-        # Translate if needed
         if lang != "English":
             with st.spinner(f"Translating to {lang.split(' - ')[0]}... please wait"):
                 display_schemes = translate_schemes_bulk(schemes, lang)
