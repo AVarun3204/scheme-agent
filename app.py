@@ -7,7 +7,9 @@ from matcher import match_schemes
 from checklist import generate_checklist, get_priority_docs
 from tracker import (save_application, get_user_applications,
                      update_status, STATUS_OPTIONS, STATUS_EMOJI, delete_application)
-from translator import LANGUAGES, translate_schemes_bulk, get_greeting
+from translator import LANGUAGES, get_greeting
+import translator as translator_module
+translate_schemes_bulk = translator_module.translate_schemes_bulk
 
 load_dotenv(override=True)
 
